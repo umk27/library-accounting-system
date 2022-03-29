@@ -1,0 +1,69 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: user-interface-deployment
+  labels:
+    app : user-interface-deployment
+spec:
+  selector:
+    matchLabels:
+      project: user-interface
+  template:
+    metadata:
+      labels:
+        project: user-interface
+    spec:
+      containers:
+        - name : user-interface-container
+          image: umk27/user-interface:latest
+          ports:
+            - containerPort: 8080
+      restartPolicy: Always
+
+---
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: user-interface-autoscaling
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v2beta1v1
+    kind: Deployment
+    name: user-interface-deployment
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      targetAverageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      targetAverageUtilization: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-interface-service
+  labels:
+    app: user-interface-service
+spec:
+  selector:
+    project: user-interface
+  ports:
+    - name      : app-listener
+      protocol  : TCP
+      port      : 8080
+      targetPort: 8080
+  type: LoadBalancer
+
+---
+apiVersion: v1
+data:
+  BOOK_ACCOUNTING_URI: http://book-accounting-service
+kind: ConfigMap
+metadata:
+  name: user-interface-service
+  namespace: default

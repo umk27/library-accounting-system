@@ -1,0 +1,60 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: book-accounting-deployment
+  labels:
+    app : book-accounting-deployment
+spec:
+  selector:
+    matchLabels:
+      project: book-accounting
+  template:
+    metadata:
+      labels:
+        project: book-accounting
+    spec:
+      containers:
+        - name : book-accounting
+          image: umk27/book-accounting-service:latest
+          ports:
+            - containerPort: 8000
+      restartPolicy: Always
+
+---
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: book-accounting-autoscaling
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v2beta1v1
+    kind: Deployment
+    name: book-accounting-deployment
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      targetAverageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      targetAverageUtilization: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: book-accounting-service
+  labels:
+    app: book-accounting-service
+spec:
+  selector:
+    project: book-accounting
+  ports:
+    - name      : app-listener
+      protocol  : TCP
+      port      : 8000
+      targetPort: 8000
+  type: LoadBalancer

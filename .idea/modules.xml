@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/book-accounting-service/book-accounting-service.iml" filepath="$PROJECT_DIR$/book-accounting-service/book-accounting-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eureka-server/eureka-server.iml" filepath="$PROJECT_DIR$/eureka-server/eureka-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library-accounting-system.iml" filepath="$PROJECT_DIR$/library-accounting-system.iml" />
+      <module fileurl="file://$PROJECT_DIR$/user-interface/user-interface.iml" filepath="$PROJECT_DIR$/user-interface/user-interface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/user-interface1/user-interface1.iml" filepath="$PROJECT_DIR$/user-interface1/user-interface1.iml" />
+    </modules>
+  </component>
+</project>
