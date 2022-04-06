@@ -9,9 +9,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>save-book</title>
 </head>
 <body>
+
+<h2>Введите информацию о книге</h2>
 
 <form:form action="saveBookQuery" modelAttribute="book">
 
@@ -30,6 +32,9 @@
 <br>
 <br>
 ${mes}
+<br>
+<br>
+<a href="/">Вернуться на главную страницу</a>
 
 </body>
 </html>

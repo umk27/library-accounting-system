@@ -22,9 +22,9 @@ public class VievController {
     @Autowired
     BookAccountingController controller;
 
-    @GetMapping("/test")
-    public String showTest() {
-        return "test";
+    @GetMapping("/")
+    public String mainPage() {
+        return "main-page";
     }
 
     @RequestMapping("/askBookInfo")
@@ -71,8 +71,12 @@ public class VievController {
 
     @RequestMapping("/showBooksOfAuthor")
     public String showBooksOfAuthor(Model model, @ModelAttribute("author") Author author) {
-
-        List<Book> books = controller.getAllBooks(author.getName());
+        String authorName = author.getName().trim();
+        if (authorName.equals("")) {
+            model.addAttribute("ex", "Вы не ввели имя автора");
+            return "find-books-of-author";
+        }
+        List<Book> books = controller.getAllBooks(authorName);
         if (books.get(0).getId() == 0) {
             model.addAttribute("ex", books.get(0).getTitle());
             return "find-books-of-author";
@@ -93,14 +97,25 @@ public class VievController {
 
     @RequestMapping("/saveBookQuery")
     public String saveBookQuery(Model model, @ModelAttribute("book") Book book) {
+        String title = book.getTitle().trim();
+        String authorName = book.getAuthorName().trim();
+        if (title.equals("")) {
+            model.addAttribute("mes", "Вы не ввели название книги");
+            return "save-book";
+        }
+        if (authorName.equals("")) {
+            model.addAttribute("mes", "Вы не ввели имя автора");
+            return "save-book";
+        }
+
         if (book.getCountPage() == 0 || book.getNumberOfBooksOnBalance() == 0) {
             String message = "Число страниц и количество книг на балансе не должны быть равны нулю";
             model.addAttribute("mes", message);
             return "save-book";
         }
 
-        Book book1 = new Book(book.getTitle(), book.getCountPage(), book.getNumberOfBooksOnBalance(), book.getNumberOfBooksOnBalance());
-        String message = controller.saveNewBook(book.getAuthorName(), book1);
+        Book book1 = new Book(title, book.getCountPage(), book.getNumberOfBooksOnBalance(), book.getNumberOfBooksOnBalance());
+        String message = controller.saveNewBook(authorName, book1);
         model.addAttribute("mes", message);
 
         return "save-book";
@@ -117,8 +132,19 @@ public class VievController {
 
     @RequestMapping("/deleteBookQuery")
     public String deleteBookQuery(Model model, @ModelAttribute("book") Book book) {
+        String title = book.getTitle().trim();
+        String authorName = book.getAuthorName().trim();
+        if (title.equals("")) {
+            model.addAttribute("mes", "Вы не ввели название книги");
+            return "delete-book";
+        }
+        if (authorName.equals("")) {
+            model.addAttribute("mes", "Вы не ввели имя автора");
+            return "delete-book";
+        }
 
-        String message = controller.deleteBook(book.getAuthorName(), book.getTitle());
+
+        String message = controller.deleteBook(authorName, title);
         model.addAttribute("mes", message);
 
         return "delete-book";
@@ -134,8 +160,13 @@ public class VievController {
 
     @RequestMapping("/saveReaderQuery")
     public String deleteBookQuery(Model model, @ModelAttribute("reader") Reader reader) {
+        String readerName = reader.getName().trim();
+        if (readerName.equals("")) {
+            model.addAttribute("mes", "Вы не ввели имя читателя");
+            return "save-reader";
+        }
 
-        String message = controller.saveReader(reader.getName());
+        String message = controller.saveReader(readerName);
         model.addAttribute("mes", message);
 
         return "save-reader";
@@ -151,8 +182,23 @@ public class VievController {
 
     @RequestMapping("/takeBookQuery")
     public String takeBookInfo(Model model, @ModelAttribute("book") Book book) {
+        String title = book.getTitle().trim();
+        String authorName = book.getAuthorName().trim();
+        String readerName = book.getReaderName().trim();
+        if (title.equals("")) {
+            model.addAttribute("mes", "Вы не ввели название книги");
+            return "take-book";
+        }
+        if (authorName.equals("")) {
+            model.addAttribute("mes", "Вы не ввели имя автора");
+            return "take-book";
+        }
+        if (readerName.equals("")) {
+            model.addAttribute("mes", "Вы не ввели имя читателя");
+            return "take-book";
+        }
 
-        String message = controller.takeBook(book.getReaderName(), book.getAuthorName(), book.getTitle());
+        String message = controller.takeBook(readerName, authorName, title);
         model.addAttribute("mes", message);
 
         return "take-book";
@@ -168,8 +214,23 @@ public class VievController {
 
     @RequestMapping("/returnBookQuery")
     public String returnBookQuery(Model model, @ModelAttribute("book") Book book) {
+        String title = book.getTitle().trim();
+        String authorName = book.getAuthorName().trim();
+        String readerName = book.getReaderName().trim();
+        if (title.equals("")) {
+            model.addAttribute("mes", "Вы не ввели название книги");
+            return "return-book";
+        }
+        if (authorName.equals("")) {
+            model.addAttribute("mes", "Вы не ввели имя автора");
+            return "return-book";
+        }
+        if (readerName.equals("")) {
+            model.addAttribute("mes", "Вы не ввели имя читателя");
+            return "return-book";
+        }
 
-        String message = controller.returnBook(book.getReaderName(), book.getAuthorName(), book.getTitle());
+        String message = controller.returnBook(readerName, authorName, title);
         model.addAttribute("mes", message);
 
         return "return-book";
@@ -185,24 +246,34 @@ public class VievController {
 
     @RequestMapping("/deleteReaderQuery")
     public String deleteReaderQuery(Model model, @ModelAttribute("reader") Reader reader) {
+        String readerName = reader.getName().trim();
+        if (readerName.equals("")) {
+            model.addAttribute("mes", "Вы не ввели имя читателя");
+            return "delete-reader";
+        }
 
-        String message = controller.deleteReader(reader.getName());
+        String message = controller.deleteReader(readerName);
         model.addAttribute("mes", message);
 
         return "delete-reader";
     }
 
     @RequestMapping("/askBooksOfReader")
-    public String askBooksOfReader(Model model){
+    public String askBooksOfReader(Model model) {
         model.addAttribute("reader", new Reader());
 
         return "find-books-of-reader";
     }
 
     @RequestMapping("/showBooksOfReader")
-    public String showBooksOfReader(Model model, @ModelAttribute("reader") Reader reader){
+    public String showBooksOfReader(Model model, @ModelAttribute("reader") Reader reader) {
+        String readerName = reader.getName().trim();
+        if (readerName.equals("")) {
+            model.addAttribute("mes", "Вы не ввели имя читателя");
+            return "find-books-of-reader";
+        }
 
-        List<Book> books = controller.getAllBooksOfReader(reader.getName());
+        List<Book> books = controller.getAllBooksOfReader(readerName);
         if (books.get(0).getId() == 0) {
             model.addAttribute("mes", books.get(0).getTitle());
             return "find-books-of-reader";
@@ -214,16 +285,26 @@ public class VievController {
     }
 
     @RequestMapping("/askReadersOfBook")
-    public String askReadersOfBook(Model model){
+    public String askReadersOfBook(Model model) {
         model.addAttribute("book", new Book());
 
         return "find-readers-of-book";
     }
 
     @RequestMapping("/showReadersOfBook")
-    public String showReadersOfBook(Model model, @ModelAttribute("book") Book book){
+    public String showReadersOfBook(Model model, @ModelAttribute("book") Book book) {
+        String title = book.getTitle().trim();
+        String authorName = book.getAuthorName().trim();
+        if (title.equals("")) {
+            model.addAttribute("mes", "Вы не ввели название книги");
+            return "find-readers-of-book";
+        }
+        if (authorName.equals("")) {
+            model.addAttribute("mes", "Вы не ввели имя автора");
+            return "find-readers-of-book";
+        }
 
-        List<Reader> readers = controller.getAllReadersOfBook(book.getAuthorName(),book.getTitle());
+        List<Reader> readers = controller.getAllReadersOfBook(authorName, title);
         if (readers.get(0).getId() == 0) {
             model.addAttribute("mes", readers.get(0).getName());
             return "find-readers-of-book";

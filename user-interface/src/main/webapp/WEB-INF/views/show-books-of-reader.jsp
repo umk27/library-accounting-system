@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>show-books-of-reader</title>
 </head>
 <body>
 
@@ -23,12 +23,17 @@
 
     <c:forEach var="b" items="${booksOfReader}">
 
-    <tr>
-        <td>${b.title}</td>
-        <td>${b.countPage}</td>
-    </tr>
+        <tr>
+            <td>${b.title}</td>
+            <td>${b.countPage}</td>
+        </tr>
 
     </c:forEach>
+</table>
+<br>
+<br>
+<a href="/">Вернуться на главную страницу</a>
 
 </body>
+
 </html>

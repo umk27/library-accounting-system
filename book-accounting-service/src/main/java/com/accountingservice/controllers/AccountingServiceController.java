@@ -30,8 +30,7 @@ public class AccountingServiceController {
     @Autowired
     private BookRepository bookRepository;
 
-    @GetMapping("/getAuthor/author/{authorName}")
-    public Author getAuthor(@PathVariable String authorName) {
+    private Author getAuthor(@PathVariable String authorName) {
         Optional<Author> optional = authorRepository.findByName(authorName);
         if (!optional.isPresent()) {
             return new Author("Автор " + authorName + " не найден");
@@ -39,8 +38,19 @@ public class AccountingServiceController {
         return optional.get();
     }
 
-    @GetMapping("/getBook/author/{authorName}/title/{title}")
-    public Book getBook(@PathVariable String authorName, @PathVariable String title) {
+    /*@GetMapping("/getAuthor/author/{authorName}")
+    public Author getAuthorInfo(@PathVariable String authorName) {
+        Author author = getAuthor(authorName);
+        List<Book> books = new ArrayList<>();
+        for (Book b : author.getBooks()) {
+            Book book = new Book(b.getId(),b.getTitle(),b.getCountPage(),b.getNumberOfBooksAvailable(),b.getNumberOfBooksOnBalance(),
+                    new Author(b.getAuthor().getName()));
+
+        }
+        return new Author(author.getId(), author.getName(), books);
+    }*/
+
+    private Book getBook(String authorName, String title) {
         Book book = null;
         Author author = getAuthor(authorName);
         if (author.getName().equals("Автор " + authorName + " не найден")) {
@@ -58,8 +68,14 @@ public class AccountingServiceController {
 
     }
 
-    @GetMapping("/getBook/title/{title}")
-    public Book getBook(@PathVariable String title) {
+    @GetMapping("/getBook/author/{authorName}/title/{title}")
+    public Book getBookInfo(@PathVariable String authorName, @PathVariable String title) {
+        Book book = getBook(authorName, title);
+        Author author = new Author(book.getAuthor().getId(), book.getAuthor().getName());
+        return new Book(book.getId(), book.getTitle(), book.getCountPage(), book.getNumberOfBooksAvailable(), book.getNumberOfBooksOnBalance(), author);
+    }
+
+    private Book getBook(String title) {
         Optional<Book> optional = bookRepository.findByTitle(title);
         if (optional.isPresent()) {
             return optional.get();
@@ -67,6 +83,13 @@ public class AccountingServiceController {
             return new Book("Книга " + title + " не найдена", new Author("нет"));
         }
 
+    }
+
+    @GetMapping("/getBook/title/{title}")
+    public Book getBookInfo(@PathVariable String title) {
+        Book book = getBook(title);
+        Author author = new Author(book.getAuthor().getId(), book.getAuthor().getName());
+        return new Book(book.getId(), book.getTitle(), book.getCountPage(), book.getNumberOfBooksAvailable(), book.getNumberOfBooksOnBalance(), author);
     }
 
     @GetMapping("/getAllBooks/author/{authorName}")
@@ -147,8 +170,7 @@ public class AccountingServiceController {
         return "Читатель " + readerName + " добавлен в базу";
     }
 
-    @GetMapping("/getReader/reader/{readerName}")
-    public Reader getReader(@PathVariable String readerName) {
+    private Reader getReader(@PathVariable String readerName) {
         Optional<Reader> optional = readerRepository.findByName(readerName);
         if (!optional.isPresent()) {
             return new Reader("Читатель " + readerName + " не найден");
@@ -198,7 +220,7 @@ public class AccountingServiceController {
 
 
             return "Выдана книга " + title + " читателю " + readerName + ", книг в наличии "
-                    + book.getNumberOfBooksAvailable()+", книг на балансе " + book.getNumberOfBooksOnBalance();
+                    + book.getNumberOfBooksAvailable() + ", книг на балансе " + book.getNumberOfBooksOnBalance();
 
         } else {
             return "Нет книг " + title + " в наличии";
@@ -246,7 +268,7 @@ public class AccountingServiceController {
 
 
         return "Читатель " + readerName + " вернул книгу " + title + ", книг в наличии "
-                + book.getNumberOfBooksAvailable()+", книг на балансе " + book.getNumberOfBooksOnBalance();
+                + book.getNumberOfBooksAvailable() + ", книг на балансе " + book.getNumberOfBooksOnBalance();
 
 
     }
@@ -295,16 +317,16 @@ public class AccountingServiceController {
             readers.add(reader);
             return readers;
         }
-        if(book.getNumberOfBooksAvailable()==book.getNumberOfBooksOnBalance()){
+        if (book.getNumberOfBooksAvailable() == book.getNumberOfBooksOnBalance()) {
             List<Reader> readers = new ArrayList<>();
-            Reader reader = new Reader("Все книги в библиотеке в количестве "+ book.getNumberOfBooksOnBalance());
+            Reader reader = new Reader("Все книги в библиотеке в количестве " + book.getNumberOfBooksOnBalance());
             readers.add(reader);
             return readers;
         }
         List<Reader> readers = book.getReaders();
         List<Reader> readers1 = new ArrayList<>();
         for (Reader r : readers) {
-            readers1.add(new Reader(r.getId(),r.getName()));
+            readers1.add(new Reader(r.getId(), r.getName()));
         }
         return readers1;
     }

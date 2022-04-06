@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>show-books-of-author</title>
 </head>
 <body>
 
@@ -37,5 +37,10 @@
     </c:forEach>
 </table>
 
+<br>
+<br>
+<a href="/">Вернуться на главную страницу</a>
+
 </body>
+
 </html>

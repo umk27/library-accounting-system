@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>show-readers-of-book</title>
 </head>
 <body>
 
@@ -33,5 +33,9 @@
     <br>
     ${mes}
 
+    <br>
+    <br>
+    <a href="/">Вернуться на главную страницу</a>
 </body>
+
 </html>

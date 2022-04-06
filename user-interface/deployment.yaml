@@ -1,9 +1,9 @@
 apiVersion : apps/v1
 kind: Deployment
 metadata:
-  name: user-interface-deployment
+  name: user-interface
   labels:
-    app : user-interface-deployment
+    app : user-interface
 spec:
   selector:
     matchLabels:
@@ -29,7 +29,7 @@ spec:
   scaleTargetRef:
     apiVersion: apps/v2beta1v1
     kind: Deployment
-    name: user-interface-deployment
+    name: user-interface
   minReplicas: 1
   maxReplicas: 3
   metrics:
@@ -46,9 +46,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: user-interface-service
+  name: user-interface
   labels:
-    app: user-interface-service
+    app: user-interface
 spec:
   selector:
     project: user-interface
@@ -60,10 +60,10 @@ spec:
   type: LoadBalancer
 
 ---
-apiVersion: v1
-data:
-  BOOK_ACCOUNTING_URI: http://book-accounting-service
-kind: ConfigMap
-metadata:
-  name: user-interface-service
-  namespace: default
+#apiVersion: v1
+#data:
+#  BOOK_ACCOUNTING_URI: http://book-accounting
+#kind: ConfigMap
+#metadata:
+#  name: user-interface
+#  namespace: default

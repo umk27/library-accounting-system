@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>find-books-of-author</title>
 </head>
 <body>
 
@@ -22,12 +22,15 @@
     Автор <form:input path="name"/>
     <br><br>
 
-    <input type="submit" value="Найти"/>
+    <input type="submit" value="Найти книги автора"/>
 
 </form:form>
 <br>
 <br>
 ${ex}
+<br>
+<br>
+<a href="/">Вернуться на главную страницу</a>
 
 </body>
 </html>

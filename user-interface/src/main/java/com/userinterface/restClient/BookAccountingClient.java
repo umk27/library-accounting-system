@@ -12,17 +12,14 @@ import java.util.List;
  * Created by User on 19.02.2022.
  */
 //@FeignClient(name = "BOOK-ACCOUNTING-SERVICE")
-@FeignClient(name = "book-accounting-service", url = "${BOOK_ACCOUNTING_URI:http://localhost}:8000")
+@FeignClient(name = "BOOK-ACCOUNTING-SERVICE", url = "http://35.193.181.143:8000")
 public interface BookAccountingClient {
 
-    @GetMapping("/getAuthor/author/{authorName}")
-    public Author getAuthor(@PathVariable("authorName") String authorName);
-
     @GetMapping("/getBook/author/{authorName}/title/{title}")
-    public Book getBook(@PathVariable("authorName") String authorName, @PathVariable("title") String title);
+    public Book getBookInfo(@PathVariable("authorName") String authorName, @PathVariable("title") String title);
 
     @GetMapping("/getBook/title/{title}")
-    public Book getBook(@PathVariable("title") String title);
+    public Book getBookInfo(@PathVariable("title") String title);
 
     @GetMapping("/getAllBooks/author/{authorName}")
     public List<Book> getAllBooks(@PathVariable("authorName") String authorName);

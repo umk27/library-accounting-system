@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>take-book</title>
 </head>
 <body>
 
@@ -31,6 +31,10 @@
 <br>
 <br>
 ${mes}
+
+<br>
+<br>
+<a href="/">Вернуться на главную страницу</a>
 
 </body>
 </html>

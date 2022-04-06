@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>show-book-info</title>
 </head>
 <body>
 
@@ -19,6 +19,16 @@
 <br>
 <br>
 Число страниц: ${book.countPage}
+<br>
+<br>
+Число книг в наличии: ${book.numberOfBooksAvailable}
+<br>
+<br>
+Число книг на балансе: ${book.numberOfBooksOnBalance}
+
+<br>
+<br>
+<a href="/">Вернуться на главную страницу</a>
 
 </body>
 </html>

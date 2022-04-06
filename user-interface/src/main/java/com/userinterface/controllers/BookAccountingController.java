@@ -21,16 +21,14 @@ public class BookAccountingController {
 
     @GetMapping("/getBook/author/{authorName}/title/{title}")
     public Book getBook(@PathVariable String authorName, @PathVariable String title) {
-        Book book = client.getBook(authorName, title);
-        Author author = new Author(book.getAuthor().getId(), book.getAuthor().getName());
-        return new Book(book.getId(), book.getTitle(), book.getCountPage(), book.getNumberOfBooksAvailable(), book.getNumberOfBooksOnBalance(), author);
+        Book book = client.getBookInfo(authorName, title);
+        return book;
     }
 
     @GetMapping("/getBook/title/{title}")
-    public Book getBook(@PathVariable String title) {
-        Book book = client.getBook(title);
-        Author author = new Author(book.getAuthor().getId(), book.getAuthor().getName());
-        return new Book(book.getId(), book.getTitle(), book.getCountPage(), book.getNumberOfBooksAvailable(), book.getNumberOfBooksOnBalance(), author);
+    public Book getBook(String title) {
+        Book book = client.getBookInfo(title);
+        return  book;
     }
 
     @GetMapping("/getAllBooks/author/{authorName}")

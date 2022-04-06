@@ -1,54 +1,60 @@
-apiVersion: apps/v1
+apiVersion : apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    deployment.kubernetes.io/revision: "1"
-  labels:
-    app: book-accounting
   name: book-accounting
-  namespace: default
+  labels:
+    app : book-accounting
 spec:
-  replicas: 1
   selector:
     matchLabels:
-      app: book-accounting
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
+      project: book-accounting
   template:
     metadata:
       labels:
-        app: book-accounting
+        project: book-accounting
     spec:
       containers:
-      - image: umk27/book-accounting-service:latest
-        imagePullPolicy: IfNotPresent
-        name: book-accounting-service
-        readinessProbe:
-          httpGet:
-            port: 8000
-            path: /actuator/health/readiness
-        livenessProbe:
-          httpGet:
-            port: 8000
-            path: /actuator/health/liveness
+        - name : book-accounting
+          image: umk27/book-accounting-service:latest
+          ports:
+            - containerPort: 8000
       restartPolicy: Always
+
+---
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: book-accounting-autoscaling
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v2beta1v1
+    kind: Deployment
+    name: book-accounting
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      targetAverageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      targetAverageUtilization: 80
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
+  name: book-accounting
   labels:
     app: book-accounting
-  name: book-accounting
-  namespace: default
 spec:
-  ports:
-  - port: 8000
-    protocol: TCP
-    targetPort: 8000
   selector:
-    app: book-accounting
-  sessionAffinity: None
+    project: book-accounting
+  ports:
+    - name      : app-listener
+      protocol  : TCP
+      port      : 8000
+      targetPort: 8000
   type: LoadBalancer

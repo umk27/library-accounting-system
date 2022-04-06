@@ -9,9 +9,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>find-books-of-reader</title>
 </head>
 <body>
+
+<h2>Введите имя читателя</h2>
 
 <form:form action="showBooksOfReader" modelAttribute="reader">
 
@@ -24,6 +26,9 @@
 <br>
 <br>
 ${mes}
+<br>
+<br>
+<a href="/">Вернуться на главную страницу</a>
 
 </body>
 </html>
