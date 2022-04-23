@@ -6,7 +6,6 @@ import com.accountingservice.entities.Reader;
 import com.accountingservice.repositories.AuthorRepository;
 import com.accountingservice.repositories.BookRepository;
 import com.accountingservice.repositories.ReaderRepository;
-import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

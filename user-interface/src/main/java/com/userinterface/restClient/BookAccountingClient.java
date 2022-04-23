@@ -12,7 +12,7 @@ import java.util.List;
  * Created by User on 19.02.2022.
  */
 //@FeignClient(name = "BOOK-ACCOUNTING-SERVICE")
-@FeignClient(name = "BOOK-ACCOUNTING-SERVICE", url = "http://35.193.181.143:8000")
+@FeignClient(name = "BOOK-ACCOUNTING-SERVICE", url = "http://104.197.4.183:8000")
 public interface BookAccountingClient {
 
     @GetMapping("/getBook/author/{authorName}/title/{title}")
